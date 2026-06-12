@@ -1,0 +1,308 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BEARGRANDAUTO</title>
+  <style>
+    :root { --bg:#111; --panel:#181818; --accent:#ffcc00; --muted:rgba(255,255,255,0.08); }
+    html,body{height:100%;}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: #f4f4f4;
+    }
+    header {
+      position: relative;
+      padding: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 220px;
+      background: url("assets/GTAO 2026-03-14 18-21-32.png") center/cover no-repeat;
+      border-bottom: 1px solid #333;
+      color: #fff;
+    }
+    header::before { content: ""; position:absolute; inset:0; background: rgba(0,0,0,0.45); }
+    header h1 { position:relative; margin:0 0 .25rem 0; z-index:1; font-size:clamp(2rem,6vw,3.6rem); letter-spacing:.12em; font-weight:700; text-shadow:0 6px 14px rgba(0,0,0,.75); }
+    .header-meta{position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:.6rem; margin-top:.5rem}
+    .site-logo{height:64px; width:auto; border-radius:6px; box-shadow:0 6px 12px rgba(0,0,0,.6); margin-bottom:.35rem}
+    #countdown{display:flex; gap:.6rem; align-items:center; color:#fff; font-weight:600}
+    .count-item{text-align:center; min-width:60px}
+    .count-value{display:block; font-size:1.2rem}
+    .count-label{display:block; font-size:.7rem; opacity:.85}
+    .social-links{display:flex; gap:.6rem; align-items:center; justify-content:center; margin-top:.6rem}
+    .social{display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; background:var(--muted); border-radius:8px; text-decoration:none; color:#fff; transition:background .15s, transform .12s}
+    .social svg{width:18px; height:18px}
+    .social:hover{background:var(--accent); transform:translateY(-2px)}
+
+    .featured-video{padding:1.5rem 1rem; background:var(--panel); border-bottom:1px solid #222; text-align:center}
+    .featured-video h2{margin:0 0 1rem; font-size:clamp(1.5rem,2vw,2.4rem); letter-spacing:.09em; color:var(--accent)}
+    .featured-video .featured-thumb{display:inline-block; position:relative; width:min(100%,980px); border-radius:18px; overflow:hidden}
+    .featured-video .featured-thumb img{display:block; width:100%; height:550px; object-fit:cover}
+    .featured-video .play-btn{position:absolute; right:16px; bottom:16px; background:rgba(0,0,0,.6); color:#fff; padding:10px 14px; border-radius:10px}
+
+    nav{display:flex; justify-content:center; align-items:center; gap:1rem; padding:1rem; background:var(--panel)}
+    nav a, .dropdown-button{color:#f4f4f4; text-decoration:none; text-transform:uppercase; letter-spacing:.05em}
+    nav a:hover, .dropdown-button:hover, .dropdown-button:focus{color:#111; background:var(--accent)}
+    .dropdown{position:relative; display:inline-flex}
+
+    /* Top videos carousel */
+    .top-videos{padding:1.25rem; background:linear-gradient(180deg, rgba(24,24,24,.95), rgba(16,16,16,.95)); border-top:1px solid #222}
+    .top-videos h2{margin:0 0 .8rem; color:var(--accent); font-size:1.15rem}
+    .post{background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:12px; overflow:hidden}
+    .post a{display:block; color:inherit; text-decoration:none}
+    .post img{width:100%; height:150px; object-fit:cover}
+    .post .post-body{padding:.65rem .8rem}
+    .post h3{margin:0 0 .45rem; font-size:.98rem}
+    .meta{font-size:.85rem; opacity:.85; display:none}
+
+    .slider-wrapper{overflow:hidden; width:100%}
+    .slider-track{display:flex; gap:.9rem; align-items:stretch; animation:scroll-left 22s linear infinite}
+    .slider-track:hover{animation-play-state:paused}
+    .slider-track .post{flex:0 0 180px; min-width:180px}
+    .slider-track .post img{height:96px}
+    @keyframes scroll-left{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-wrap">
+      <h1>BEARGRANDAUTO</h1>
+    </div>
+    <div class="header-meta">
+      <img class="site-logo" src="assets/photo_2026-06-12_10-32-49.jpg" alt="site logo" />
+      <div id="countdown" aria-live="polite">
+        <div class="count-item"><span class="count-value" id="days">0</span><span class="count-label">Days</span></div>
+        <div class="count-item"><span class="count-value" id="hours">00</span><span class="count-label">Hours</span></div>
+        <div class="count-item"><span class="count-value" id="minutes">00</span><span class="count-label">Minutes</span></div>
+        <div class="count-item"><span class="count-value" id="seconds">00</span><span class="count-label">Seconds</span></div>
+      </div>
+      <div class="social-links">
+        <a class="social" href="https://www.instagram.com/bear_games2?igsh=MTNmZzJjcHZ1dzI2Mw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5z" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+        </a>
+        <a class="social" href="https://www.facebook.com/beargames.og" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.5 2 12c0 5 3.7 9.1 8.4 9.9v-7h-2.5V12h2.5v-2.1c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7C18.3 21.1 22 17 22 12c0-5.5-4.5-10-10-10z" fill="currentColor"/></svg>
+        </a>
+        <a class="social" href="https://youtube.com/@beargames2-ju1cs?si=RjlQ_3g6NBwTTf8H" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 7.2s-.2-1.6-.8-2.3c-.8-1-1.6-1-2-1.1C15.9 3.5 12 3.5 12 3.5h-.1s-3.9 0-6.9.2c-.4.1-1.2.1-2 1.1C2.2 5.6 2 7.2 2 7.2S2 9 2 10.8v2.4C2 16 2.2 17.8 2.2 17.8s.2 1.6.8 2.3c.8 1 1.9 1 2.4 1.1 1.8.2 7.6.2 7.6.2s3.9 0 6.9-.2c.4-.1 1.2-.1 2-1.1.6-.7.8-2.3.8-2.3s.2-1.8.2-3.6v-2.4C22.2 9 22 7.2 22 7.2z" stroke="currentColor" stroke-width="0.8" fill="none"/><path d="M10 14V9l5 2.5-5 2.5z" fill="currentColor"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+  <section class="featured-video" aria-label="Featured video post">
+    <h2>All Benefactor Vehicles in Gta 5 Online in 2025</h2>
+    <div class="featured-thumb">
+      <a href="https://www.youtube.com/watch?v=slOQzV7pYlk" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/slOQzV7pYlk/hqdefault.jpg" alt="All Benefactor Vehicles thumbnail">
+        <div class="play-btn">Watch</div>
+      </a>
+    </div>
+  </section>
+  <nav>
+    <a href="#">GTA V</a>
+  </nav>
+
+  <section class="top-videos" aria-label="Top 10 videos from beargames 2">
+    <h2>Top 10 Videos from beargames 2</h2>
+    <div class="slider-wrapper">
+      <div class="slider-track">
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=slOQzV7pYlk" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/slOQzV7pYlk/hqdefault.jpg" alt="All Benefactor Vehicles thumbnail">
+          <div class="post-body"><h3>All Benefactor Vehicles in Gta 5 Online in  2025</h3><div class="meta">8.3K views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=dt3Sx-li8Fs" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/dt3Sx-li8Fs/hqdefault.jpg" alt="All Obey Cars thumbnail">
+          <div class="post-body"><h3>All Obey [ audi ] Cars In Gta5 Online 2025</h3><div class="meta">6.3K views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=Gt86AoYey-8" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/Gt86AoYey-8/hqdefault.jpg" alt="Ghost outfit thumbnail">
+          <div class="post-body"><h3>Ghost outfit GTA5 online without glitches</h3><div class="meta">2.3K views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=sEIt2iJy9rc" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/sEIt2iJy9rc/hqdefault.jpg" alt="EVERY HONDA thumbnail">
+          <div class="post-body"><h3>EVERY HONDA Car in GTA V Online 2026</h3><div class="meta">1.3K views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=LhVGg9Ls-do" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/LhVGg9Ls-do/hqdefault.jpg" alt="New vehicles thumbnail">
+          <div class="post-body"><h3>New vehicles ubermacht sentinel xs4 and Grotti gt750 customization and review</h3><div class="meta">750 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=E0fH0j1-0kE" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/E0fH0j1-0kE/hqdefault.jpg" alt="HIFI Outfit Guide thumbnail">
+          <div class="post-body"><h3>GTA Online 2026 HIFI Outfit Guide | Tan Joggers & New Glitch Layering</h3><div class="meta">585 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=ZelnhnRCZaA" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/ZelnhnRCZaA/hqdefault.jpg" alt="Female Ghost Outfit thumbnail">
+          <div class="post-body"><h3>Female Ghost Outfit ( step by step) guide gta5 online  2026</h3><div class="meta">369 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=k6barRCszu4" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/k6barRCszu4/hqdefault.jpg" alt="FREE GTA Cars thumbnail">
+          <div class="post-body"><h3>FREE GTA Online Cars You MUST Claim NOW! (Phantom Wedge + Paragon R)</h3><div class="meta">355 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=k4hAHHzVFME" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/k4hAHHzVFME/hqdefault.jpg" alt="Every Annis Car thumbnail">
+          <div class="post-body"><h3>Every Annis Car Available in GTA 5 Online (2026 Update)</h3><div class="meta">278 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=yG6ySkc7ZSQ" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/yG6ySkc7ZSQ/hqdefault.jpg" alt="Top 15 Defensive thumbnail">
+          <div class="post-body"><h3>Top 15 Defensive & Attack Vehicles in GTA Online My Military Collection</h3><div class="meta">202 views</div></div>
+        </a>
+      </article>
+      <!-- duplicated set for seamless loop -->
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=slOQzV7pYlk" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/slOQzV7pYlk/hqdefault.jpg" alt="All Benefactor Vehicles thumbnail">
+          <div class="post-body"><h3>All Benefactor Vehicles in Gta 5 Online in  2025</h3><div class="meta">8.3K views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=dt3Sx-li8Fs" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/dt3Sx-li8Fs/hqdefault.jpg" alt="All Obey Cars thumbnail">
+          <div class="post-body"><h3>All Obey [ audi ] Cars In Gta5 Online 2025</h3><div class="meta">6.3K views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=Gt86AoYey-8" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/Gt86AoYey-8/hqdefault.jpg" alt="Ghost outfit thumbnail">
+          <div class="post-body"><h3>Ghost outfit GTA5 online without glitches</h3><div class="meta">2.3K views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=sEIt2iJy9rc" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/sEIt2iJy9rc/hqdefault.jpg" alt="EVERY HONDA thumbnail">
+          <div class="post-body"><h3>EVERY HONDA Car in GTA V Online 2026</h3><div class="meta">1.3K views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=LhVGg9Ls-do" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/LhVGg9Ls-do/hqdefault.jpg" alt="New vehicles thumbnail">
+          <div class="post-body"><h3>New vehicles ubermacht sentinel xs4 and Grotti gt750 customization and review</h3><div class="meta">750 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=E0fH0j1-0kE" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/E0fH0j1-0kE/hqdefault.jpg" alt="HIFI Outfit Guide thumbnail">
+          <div class="post-body"><h3>GTA Online 2026 HIFI Outfit Guide | Tan Joggers & New Glitch Layering</h3><div class="meta">585 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=ZelnhnRCZaA" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/ZelnhnRCZaA/hqdefault.jpg" alt="Female Ghost Outfit thumbnail">
+          <div class="post-body"><h3>Female Ghost Outfit ( step by step) guide gta5 online  2026</h3><div class="meta">369 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=k6barRCszu4" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/k6barRCszu4/hqdefault.jpg" alt="FREE GTA Cars thumbnail">
+          <div class="post-body"><h3>FREE GTA Online Cars You MUST Claim NOW! (Phantom Wedge + Paragon R)</h3><div class="meta">355 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=k4hAHHzVFME" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/k4hAHHzVFME/hqdefault.jpg" alt="Every Annis Car thumbnail">
+          <div class="post-body"><h3>Every Annis Car Available in GTA 5 Online (2026 Update)</h3><div class="meta">278 views</div></div>
+        </a>
+      </article>
+      <article class="post">
+        <a href="https://www.youtube.com/watch?v=yG6ySkc7ZSQ" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/yG6ySkc7ZSQ/hqdefault.jpg" alt="Top 15 Defensive thumbnail">
+          <div class="post-body"><h3>Top 15 Defensive & Attack Vehicles in GTA Online My Military Collection</h3><div class="meta">202 views</div></div>
+        </a>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function() {
+      const target = new Date('2026-11-19T00:00:00');
+      const $days = document.getElementById('days');
+      const $hours = document.getElementById('hours');
+      const $minutes = document.getElementById('minutes');
+      const $seconds = document.getElementById('seconds');
+
+      function pad(n){return String(n).padStart(2,'0');}
+
+      function update(){
+        const now = new Date();
+        let diff = Math.max(0, Math.floor((target - now) / 1000));
+        if(diff <= 0){
+          $days.textContent = '0';
+          $hours.textContent = '00';
+          $minutes.textContent = '00';
+          $seconds.textContent = '00';
+          return;
+        }
+        const days = Math.floor(diff / 86400); diff -= days * 86400;
+        const hours = Math.floor(diff / 3600); diff -= hours * 3600;
+        const minutes = Math.floor(diff / 60); diff -= minutes * 60;
+        const seconds = diff;
+        $days.textContent = days;
+        $hours.textContent = pad(hours);
+        $minutes.textContent = pad(minutes);
+        $seconds.textContent = pad(seconds);
+      }
+
+      function removeBlackBackgroundFromLogo(threshold = 50) {
+        const imgEl = document.querySelector('.site-logo');
+        if(!imgEl) return;
+        const tmp = new Image();
+        tmp.crossOrigin = 'anonymous';
+        tmp.src = imgEl.src;
+        tmp.onload = function(){
+          const w = tmp.naturalWidth, h = tmp.naturalHeight;
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(tmp, 0, 0);
+          try {
+            const id = ctx.getImageData(0,0,w,h);
+            const d = id.data;
+            for(let i=0;i<d.length;i+=4){
+              const r=d[i], g=d[i+1], b=d[i+2], a=d[i+3];
+              if(a>0 && r<threshold && g<threshold && b<threshold){
+                d[i+3] = 0;
+              }
+            }
+            ctx.putImageData(id,0,0);
+            imgEl.src = canvas.toDataURL('image/png');
+          } catch(e) {
+            // security or other error — silently fail
+            console.warn('Could not process logo image:', e);
+          }
+        };
+      }
+
+      // run on load
+      window.addEventListener('load', function(){
+        removeBlackBackgroundFromLogo(50);
+        update();
+        setInterval(update, 1000);
+      });
+    })();
+  </script>
+</body>
+</html>
